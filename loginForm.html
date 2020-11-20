@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <script>
+        var baseUrl = "http://localhost:8080";
+        function handleAddUser(e) {
+            e.preventDefault();
+            var user = document.forms["add"]["auser"].value;
+            var pass = document.forms["add"]["apass"].value;
+            var myJSONObject = { user, pass }
+
+            requestMethod('/user', 'POST', myJSONObject);
+        }
+        function handleVerifyUser(e) {
+            e.preventDefault();
+            var user = document.forms["verify"]["vuser"].value;
+            var pass = document.forms["verify"]["vpass"].value;
+            var myJSONObject = { user, pass }
+            requestMethod('/login', 'POST', myJSONObject);
+        }
+
+        async function requestMethod(url, reqmethod, myJSONObject) {
+            try {
+                let response = await fetch(baseUrl + url, {
+                    method: reqmethod,
+                    headers: {
+                        "content-type": 'application/json'
+                    },
+                    body: JSON.stringify(myJSONObject),
+                })
+                response = await response.text()
+                alert(response);
+            }
+            catch (err) {
+                alert(err)
+            }
+
+        }
+    </script>
+</head>
+<h1>VERIFY THE USER</h1>
+<form name="verify" onsubmit="handleVerifyUser(event);href=baseUrl+'/loginn'">
+    <input type="text" placeholder="username.." id="vuser" /><br><br>
+    <input type="password" placeholder="password" id="vpass" /><br><br>
+    <input type="submit" value="submit">
+</form>
+<h1>ADD USER</h1>
+<form name="add" onsubmit="handleAddUser(event)">
+    <input type="text" placeholder="username.." id="auser" /><br><br>
+    <input type="password" placeholder="password" id="apass" /><br><br>
+    <input type="submit" value="submit">
+</form>
+<form action="http://localhost:3000/read" method="get">
+    <input type="submit" value=" READ  ">
+</form>
+
+</html>
